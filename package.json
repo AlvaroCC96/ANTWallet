@@ -11,7 +11,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
-  "homepage": "https://<your-github-username>.github.io/ANTWallet",
+  "homepage": "https://AlvaroCC96.github.io/ANTWallet",
   "dependencies": {
     "firebase": "^12.15.0",
     "framer-motion": "^12.40.0",
