@@ -3,7 +3,9 @@ import { doc, onSnapshot, setDoc } from 'firebase/firestore'
 import { db } from '../lib/firebase'
 import { useAuth } from './AuthContext'
 import type { Account, AntExpense, AppData, Debt, DebtPayment } from '../types/models'
+import type { FinancialGoal } from '../types/rpg'
 import { todayISO } from '../utils/dates'
+import { isGoalCompleted } from '../utils/missions'
 import { DEMO_DATA } from '../data/demo'
 
 const EMPTY_DATA: AppData = {
@@ -11,11 +13,25 @@ const EMPTY_DATA: AppData = {
   debts: [],
   expenses: [],
   payments: [],
+  goals: [],
+  unlockedAchievements: [],
   settings: { monthlyAntBudget: 150000 },
 }
 
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+}
+
+// Normalizes documents written before a field existed (e.g. `goals`) so older
+// Firestore docs don't crash the app when a new field is introduced.
+function normalizeData(raw: Partial<AppData>): AppData {
+  return {
+    ...EMPTY_DATA,
+    ...raw,
+    settings: { ...EMPTY_DATA.settings, ...raw.settings },
+    goals: raw.goals ?? [],
+    unlockedAchievements: raw.unlockedAchievements ?? [],
+  }
 }
 
 interface AppContextValue {
@@ -31,6 +47,10 @@ interface AppContextValue {
   addPayment: (payment: Omit<DebtPayment, 'id' | 'createdAt'>) => { debt: Debt | undefined; defeated: boolean }
   deletePayment: (id: string) => void
   updateBudget: (amount: number) => void
+  addGoal: (goal: Omit<FinancialGoal, 'id' | 'createdAt' | 'completedAt'>) => void
+  updateGoalAmount: (id: string, currentAmount: number) => { completed: boolean }
+  deleteGoal: (id: string) => void
+  recordAchievementUnlocks: (ids: string[]) => void
   loadDemo: () => void
   clearAll: () => void
   importBackup: (json: AppData) => void
@@ -41,34 +61,36 @@ const AppContext = createContext<AppContextValue | null>(null)
 export function AppProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth()
   const userId = user?.uid
-  const [data, setData] = useState<AppData>(EMPTY_DATA)
-  const [loading, setLoading] = useState(true)
+  const [dataState, setDataState] = useState<AppData>(EMPTY_DATA)
+  const [loadingState, setLoadingState] = useState(true)
 
   useEffect(() => {
-    if (!userId) {
-      setData(EMPTY_DATA)
-      setLoading(false)
-      return
-    }
+    if (!userId) return
 
-    setLoading(true)
+    // No setLoadingState(true) here: the initial state is already `true`, and
+    // userId only ever transitions once per mount (see Gate/AccessGate below).
     const ref = doc(db, 'users', userId)
     const unsubscribe = onSnapshot(ref, async (snapshot) => {
       if (snapshot.exists()) {
-        setData(snapshot.data() as AppData)
+        setDataState(normalizeData(snapshot.data() as Partial<AppData>))
       } else {
         await setDoc(ref, EMPTY_DATA)
-        setData(EMPTY_DATA)
+        setDataState(EMPTY_DATA)
       }
-      setLoading(false)
+      setLoadingState(false)
     })
 
     return unsubscribe
   }, [userId])
 
+  // AppProvider only ever mounts once a userId is known (see Gate/AccessGate in
+  // App.tsx), so these fallbacks mostly guard the type-level `undefined` case.
+  const data = userId ? dataState : EMPTY_DATA
+  const loading = userId ? loadingState : false
+
   const value = useMemo<AppContextValue>(() => {
     function persist(next: AppData) {
-      setData(next)
+      setDataState(next)
       if (userId) {
         void setDoc(doc(db, 'users', userId), next)
       }
@@ -130,6 +152,34 @@ export function AppProvider({ children }: { children: ReactNode }) {
       updateBudget: (amount) => {
         persist({ ...data, settings: { ...data.settings, monthlyAntBudget: amount } })
       },
+      addGoal: (goal) => {
+        const newGoal: FinancialGoal = { ...goal, id: generateId(), createdAt: todayISO() }
+        persist({ ...data, goals: [...data.goals, newGoal] })
+      },
+      updateGoalAmount: (id, currentAmount) => {
+        let completed = false
+        const goals = data.goals.map((g) => {
+          if (g.id !== id) return g
+          const updated: FinancialGoal = { ...g, currentAmount: Math.max(0, currentAmount) }
+          if (!g.completedAt && isGoalCompleted(updated)) {
+            updated.completedAt = todayISO()
+            completed = true
+          }
+          return updated
+        })
+        persist({ ...data, goals })
+        return { completed }
+      },
+      deleteGoal: (id) => {
+        persist({ ...data, goals: data.goals.filter((g) => g.id !== id) })
+      },
+      recordAchievementUnlocks: (ids) => {
+        if (ids.length === 0) return
+        const existing = new Set(data.unlockedAchievements.map((u) => u.id))
+        const newEntries = ids.filter((id) => !existing.has(id)).map((id) => ({ id, unlockedAt: todayISO() }))
+        if (newEntries.length === 0) return
+        persist({ ...data, unlockedAchievements: [...data.unlockedAchievements, ...newEntries] })
+      },
       loadDemo: () => {
         persist(DEMO_DATA)
       },
@@ -137,7 +187,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         persist(EMPTY_DATA)
       },
       importBackup: (json) => {
-        persist(json)
+        persist(normalizeData(json))
       },
     }
   }, [data, loading, userId])

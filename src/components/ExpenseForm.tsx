@@ -7,6 +7,7 @@ import { todayISO } from '../utils/dates'
 import { CurrencyInput } from './CurrencyInput'
 import { Select } from './Select'
 import { getIconComponent } from './Icon'
+import { getExpenseXP } from '../utils/rpg'
 
 const inputClass =
   'w-full bg-card-alt border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-light'
@@ -43,12 +44,15 @@ export function ExpenseForm() {
 
     spawnAnt()
 
+    const xp = getExpenseXP(value)
+    const xpLabel = xp > 0 ? `+${xp} XP` : xp < 0 ? `${xp} XP` : null
+
     if (value >= SHAKE_THRESHOLD) {
       triggerShake()
-      showToast('Tu billetera recibió daño crítico', Zap)
+      showToast(xpLabel ? `Tu billetera recibió daño crítico (${xpLabel})` : 'Tu billetera recibió daño crítico', Zap)
     } else {
       const phrase = FUN_TOASTS[Math.floor(Math.random() * FUN_TOASTS.length)]
-      showToast(phrase, Bug)
+      showToast(xpLabel ? `${phrase} (${xpLabel})` : phrase, Bug)
     }
 
     setName('')

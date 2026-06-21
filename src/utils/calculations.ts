@@ -1,12 +1,5 @@
-import {
-  Bug,
-  Swords,
-  TrendingUp,
-  Trophy,
-  ShieldCheck,
-  type LucideIcon,
-} from 'lucide-react'
-import type { Account, AntExpense, Debt, DebtPayment } from '../types/models'
+import type { LucideIcon } from 'lucide-react'
+import type { Account, AntExpense, Debt } from '../types/models'
 import { getCategory } from '../data/categories'
 import { isSameMonth } from './dates'
 
@@ -109,61 +102,4 @@ export function getMainBossDebt(debts: Debt[]): Debt | null {
   const active = debts.filter((d) => d.remainingAmount > 0)
   if (active.length === 0) return null
   return active.reduce((biggest, d) => (d.remainingAmount > biggest.remainingAmount ? d : biggest))
-}
-
-export interface Achievement {
-  id: string
-  icon: LucideIcon
-  label: string
-  unlocked: boolean
-}
-
-export function getAchievements(
-  accounts: Account[],
-  debts: Debt[],
-  expenses: AntExpense[],
-  payments: DebtPayment[],
-  budget: number,
-): Achievement[] {
-  const spentThisMonth = totalAntExpensesThisMonth(expenses)
-  const bossDefeated = debts.some((d) => d.totalAmount > 0 && d.remainingAmount <= 0)
-
-  return [
-    {
-      id: 'first-expense',
-      icon: Bug,
-      label: 'Primer gasto registrado',
-      unlocked: expenses.length > 0,
-    },
-    {
-      id: 'first-debt',
-      icon: Swords,
-      label: 'Primera deuda creada',
-      unlocked: debts.length > 0,
-    },
-    {
-      id: 'first-payment',
-      icon: ShieldCheck,
-      label: 'Primer pago de deuda',
-      unlocked: payments.length > 0,
-    },
-    {
-      id: 'positive-net-worth',
-      icon: TrendingUp,
-      label: 'Patrimonio neto positivo',
-      unlocked: netWorth(accounts, debts) > 0,
-    },
-    {
-      id: 'boss-defeated',
-      icon: Trophy,
-      label: 'Jefe derrotado',
-      unlocked: bossDefeated,
-    },
-    {
-      id: 'month-under-control',
-      icon: ShieldCheck,
-      label: 'Mes bajo control: gastos hormiga bajo 50% del presupuesto',
-      unlocked: spentThisMonth < budget * 0.5 && spentThisMonth > 0,
-    },
-  ]
 }

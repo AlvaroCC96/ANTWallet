@@ -49,13 +49,14 @@ export const DEMO_DATA: AppData = {
   debts: [
     {
       id: 'demo-debt-1',
-      name: 'Tarjeta de Crédito',
+      name: 'Tarjeta CMR',
       institution: 'Banco Falabella',
       totalAmount: 1200000,
       remainingAmount: 780000,
       minimumPayment: 60000,
       icon: 'CreditCard',
       createdAt: iso(90),
+      isCreditCard: true,
     },
     {
       id: 'demo-debt-2',
@@ -66,6 +67,17 @@ export const DEMO_DATA: AppData = {
       minimumPayment: 120000,
       icon: 'Landmark',
       createdAt: iso(120),
+    },
+    {
+      id: 'demo-debt-3',
+      name: 'Visa Santander',
+      institution: 'Santander',
+      totalAmount: 800000,
+      remainingAmount: 250000,
+      minimumPayment: 40000,
+      icon: 'CreditCard',
+      createdAt: iso(70),
+      isCreditCard: true,
     },
   ],
   expenses: [
@@ -82,5 +94,27 @@ export const DEMO_DATA: AppData = {
   payments: [
     { id: 'demo-pay-1', debtId: 'demo-debt-1', amount: 60000, date: iso(20), createdAt: iso(20) },
   ],
+  goals: [
+    {
+      id: 'demo-goal-1',
+      title: 'Fondo de emergencia',
+      targetAmount: 3000000,
+      currentAmount: 1200000,
+      type: 'emergency_fund',
+      icon: 'Shield',
+      createdAt: iso(40),
+    },
+    {
+      id: 'demo-goal-2',
+      title: 'Viaje al norte',
+      targetAmount: 500000,
+      currentAmount: 500000,
+      type: 'travel',
+      icon: 'Plane',
+      createdAt: iso(35),
+      completedAt: iso(5),
+    },
+  ],
+  unlockedAchievements: [],
   settings: { monthlyAntBudget: 150000 },
 }

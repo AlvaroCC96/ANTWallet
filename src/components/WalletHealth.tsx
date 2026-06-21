@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, useAnimate } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { Wallet, ShieldCheck, AlertTriangle, AlertOctagon, Pencil, Check, X, type LucideIcon } from 'lucide-react'
 import { getWalletHealth } from '../utils/calculations'
@@ -35,7 +35,7 @@ export function WalletHealth({ spent }: { spent: number }) {
   const { shakeTick } = useFx()
   const { data, updateBudget } = useApp()
   const budget = data.settings.monthlyAntBudget
-  const [shaking, setShaking] = useState(false)
+  const [scope, animate] = useAnimate()
   const [editing, setEditing] = useState(false)
   const [draftBudget, setDraftBudget] = useState('')
   const { life, status } = getWalletHealth(spent, budget)
@@ -43,10 +43,8 @@ export function WalletHealth({ spent }: { spent: number }) {
 
   useEffect(() => {
     if (shakeTick === 0) return
-    setShaking(true)
-    const t = setTimeout(() => setShaking(false), 400)
-    return () => clearTimeout(t)
-  }, [shakeTick])
+    void animate(scope.current, { x: [0, -8, 8, -6, 6, 0] }, { duration: 0.4 })
+  }, [shakeTick, animate, scope])
 
   function handleSave(e: React.FormEvent) {
     e.preventDefault()
@@ -57,11 +55,7 @@ export function WalletHealth({ spent }: { spent: number }) {
   }
 
   return (
-    <motion.div
-      animate={shaking ? { x: [0, -8, 8, -6, 6, 0] } : {}}
-      transition={{ duration: 0.4 }}
-      className="bg-card border border-deep-darker/60 rounded-2xl p-5 space-y-3"
-    >
+    <motion.div ref={scope} className="bg-card border border-deep-darker/60 rounded-2xl p-5 space-y-3">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold text-white flex items-center gap-2">
           <Wallet size={20} className="text-accent-light" /> Vida de la billetera

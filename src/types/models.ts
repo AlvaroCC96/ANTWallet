@@ -1,3 +1,5 @@
+import type { FinancialGoal, UnlockedAchievement } from './rpg'
+
 export type AccountType = 'checking' | 'savings' | 'cash' | 'investment' | 'wallet'
 
 export interface Account {
@@ -19,6 +21,8 @@ export interface Debt {
   minimumPayment: number
   icon: string
   createdAt: string
+  /** Marks this debt as a credit card: totalAmount is its cupo (limit), remainingAmount is what's used. */
+  isCreditCard?: boolean
 }
 
 export interface AntExpense {
@@ -50,5 +54,7 @@ export interface AppData {
   debts: Debt[]
   expenses: AntExpense[]
   payments: DebtPayment[]
+  goals: FinancialGoal[]
+  unlockedAchievements: UnlockedAchievement[]
   settings: AppSettings
 }

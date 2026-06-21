@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Bug, Home, Landmark, Skull, Trophy, Settings, ShieldCheck, type LucideIcon } from 'lucide-react'
 import { AuthProvider, useAuth } from './store/AuthContext'
 import { AccessProvider, useAccess } from './store/AccessContext'
@@ -7,16 +7,20 @@ import { FxProvider } from './store/FxContext'
 import { AuthScreen } from './components/auth/AuthScreen'
 import { AccessDeniedNotice } from './components/auth/AccessDeniedNotice'
 import { UserBadge } from './components/UserBadge'
-import { Dashboard } from './components/Dashboard'
-import { AccountForm } from './components/AccountForm'
-import { AccountList } from './components/AccountList'
-import { DebtForm } from './components/DebtForm'
-import { DebtList } from './components/DebtList'
-import { ExpenseForm } from './components/ExpenseForm'
-import { ExpenseList } from './components/ExpenseList'
-import { Achievements } from './components/Achievements'
-import { ExportImport } from './components/ExportImport'
-import { AdminPanel } from './components/admin/AdminPanel'
+import { AchievementWatcher } from './components/rpg/AchievementWatcher'
+
+// Each tab's content is loaded on demand: keeps the initial bundle (login +
+// access gating) small, since none of this is needed before the user is in.
+const Dashboard = lazy(() => import('./components/Dashboard').then((m) => ({ default: m.Dashboard })))
+const AccountForm = lazy(() => import('./components/AccountForm').then((m) => ({ default: m.AccountForm })))
+const AccountList = lazy(() => import('./components/AccountList').then((m) => ({ default: m.AccountList })))
+const DebtForm = lazy(() => import('./components/DebtForm').then((m) => ({ default: m.DebtForm })))
+const DebtList = lazy(() => import('./components/DebtList').then((m) => ({ default: m.DebtList })))
+const ExpenseForm = lazy(() => import('./components/ExpenseForm').then((m) => ({ default: m.ExpenseForm })))
+const ExpenseList = lazy(() => import('./components/ExpenseList').then((m) => ({ default: m.ExpenseList })))
+const Achievements = lazy(() => import('./components/Achievements').then((m) => ({ default: m.Achievements })))
+const ExportImport = lazy(() => import('./components/ExportImport').then((m) => ({ default: m.ExportImport })))
+const AdminPanel = lazy(() => import('./components/admin/AdminPanel').then((m) => ({ default: m.AdminPanel })))
 
 type Tab = 'dashboard' | 'accounts' | 'debts' | 'expenses' | 'achievements' | 'data' | 'admin'
 
@@ -37,6 +41,14 @@ function Spinner() {
   )
 }
 
+function TabSpinner() {
+  return (
+    <div className="flex items-center justify-center py-16">
+      <Bug className="text-accent-light animate-pulse" size={28} />
+    </div>
+  )
+}
+
 function AppContent() {
   const [tab, setTab] = useState<Tab>('dashboard')
   const { isAdmin } = useAccess()
@@ -48,6 +60,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-deep">
+      <AchievementWatcher />
       <header className="border-b border-deep-darker/60 px-4 sm:px-8 py-4 flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-2">
@@ -74,34 +87,36 @@ function AppContent() {
       </nav>
 
       <main className="px-4 sm:px-8 py-6 max-w-5xl mx-auto space-y-6">
-        {tab === 'dashboard' && <Dashboard />}
+        <Suspense fallback={<TabSpinner />}>
+          {tab === 'dashboard' && <Dashboard />}
 
-        {tab === 'accounts' && (
-          <div className="space-y-4">
-            <AccountForm />
-            <AccountList />
-          </div>
-        )}
+          {tab === 'accounts' && (
+            <div className="space-y-4">
+              <AccountForm />
+              <AccountList />
+            </div>
+          )}
 
-        {tab === 'debts' && (
-          <div className="space-y-4">
-            <DebtForm />
-            <DebtList />
-          </div>
-        )}
+          {tab === 'debts' && (
+            <div className="space-y-4">
+              <DebtForm />
+              <DebtList />
+            </div>
+          )}
 
-        {tab === 'expenses' && (
-          <div className="space-y-4">
-            <ExpenseForm />
-            <ExpenseList />
-          </div>
-        )}
+          {tab === 'expenses' && (
+            <div className="space-y-4">
+              <ExpenseForm />
+              <ExpenseList />
+            </div>
+          )}
 
-        {tab === 'achievements' && <Achievements />}
+          {tab === 'achievements' && <Achievements />}
 
-        {tab === 'data' && <ExportImport />}
+          {tab === 'data' && <ExportImport />}
 
-        {tab === 'admin' && isAdmin && <AdminPanel />}
+          {tab === 'admin' && isAdmin && <AdminPanel />}
+        </Suspense>
       </main>
     </div>
   )

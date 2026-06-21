@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Plus, Landmark, PiggyBank, Banknote, TrendingUp, Smartphone } from 'lucide-react'
 import { useApp } from '../store/AppContext'
+import { useFx } from '../store/FxContext'
 import type { AccountType } from '../types/models'
 import { CurrencyInput } from './CurrencyInput'
 import { Select } from './Select'
+import { XP_RULES } from '../utils/rpg'
 
 const ACCOUNT_TYPES: { value: AccountType; label: string; icon: string; Icon: typeof Landmark }[] = [
   { value: 'checking', label: 'Cuenta Corriente', icon: 'Landmark', Icon: Landmark },
@@ -18,6 +20,7 @@ const inputClass =
 
 export function AccountForm() {
   const { addAccount } = useApp()
+  const { showToast } = useFx()
   const [bankName, setBankName] = useState('')
   const [accountName, setAccountName] = useState('')
   const [accountType, setAccountType] = useState<AccountType>('checking')
@@ -35,6 +38,8 @@ export function AccountForm() {
       balance: Number(balance),
       icon,
     })
+
+    showToast(`Cuenta agregada (+${XP_RULES.createAccount} XP)`, Plus)
 
     setBankName('')
     setAccountName('')

@@ -19,22 +19,33 @@ export function DebtForm() {
   const { addDebt } = useApp()
   const [name, setName] = useState('')
   const [institution, setInstitution] = useState('')
+  const [isCreditCard, setIsCreditCard] = useState(false)
   const [totalAmount, setTotalAmount] = useState('')
   const [remainingAmount, setRemainingAmount] = useState('')
   const [minimumPayment, setMinimumPayment] = useState('')
   const [icon, setIcon] = useState(BOSS_ICONS[0].name)
+  const [error, setError] = useState('')
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
+    setError('')
     if (!name.trim() || !totalAmount || !remainingAmount) return
+
+    const total = Number(totalAmount)
+    const remaining = Number(remainingAmount)
+    if (isCreditCard && remaining > total) {
+      setError('El cupo usado no puede ser mayor que el cupo total.')
+      return
+    }
 
     addDebt({
       name: name.trim(),
       institution: institution.trim(),
-      totalAmount: Number(totalAmount),
-      remainingAmount: Number(remainingAmount),
+      totalAmount: total,
+      remainingAmount: remaining,
       minimumPayment: Number(minimumPayment) || 0,
       icon,
+      isCreditCard,
     })
 
     setName('')
@@ -58,11 +69,30 @@ export function DebtForm() {
           onChange={(e) => setInstitution(e.target.value)}
         />
       </div>
+
+      <label className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={isCreditCard}
+          onChange={(e) => {
+            setIsCreditCard(e.target.checked)
+            if (e.target.checked) setIcon('CreditCard')
+          }}
+          className="accent-accent"
+        />
+        Es una tarjeta de crédito (registrar cupo en vez de monto fijo)
+      </label>
+
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <CurrencyInput className={inputClass} placeholder="Monto total" value={totalAmount} onChange={setTotalAmount} />
         <CurrencyInput
           className={inputClass}
-          placeholder="Monto pendiente"
+          placeholder={isCreditCard ? 'Cupo total' : 'Monto total'}
+          value={totalAmount}
+          onChange={setTotalAmount}
+        />
+        <CurrencyInput
+          className={inputClass}
+          placeholder={isCreditCard ? 'Cupo usado' : 'Monto pendiente'}
           value={remainingAmount}
           onChange={setRemainingAmount}
         />
@@ -73,6 +103,9 @@ export function DebtForm() {
           onChange={setMinimumPayment}
         />
       </div>
+
+      {error && <p className="text-danger text-xs">{error}</p>}
+
       <div className="flex gap-2 items-center">
         <span className="text-sm text-gray-400">Avatar del jefe:</span>
         {BOSS_ICONS.map(({ name: iconName, Icon: BossIcon }) => (

@@ -13,6 +13,11 @@ import { WalletHealth } from './WalletHealth'
 import { QueenAnt } from './QueenAnt'
 import { BossDebt } from './BossDebt'
 import { AntColony } from './AntColony'
+import { Achievements } from './Achievements'
+import { CreditCardSummary } from './CreditCardSummary'
+import { RPGProfileCard } from './rpg/RPGProfileCard'
+import { MissionBoard } from './rpg/MissionBoard'
+import { FinancialTimeline } from './rpg/FinancialTimeline'
 
 const cardVariants = {
   hidden: { opacity: 0, y: 16 },
@@ -30,6 +35,8 @@ export function Dashboard() {
 
   return (
     <div className="space-y-6">
+      <RPGProfileCard />
+
       <div className="grid sm:grid-cols-3 gap-4">
         <motion.div
           variants={cardVariants}
@@ -62,6 +69,8 @@ export function Dashboard() {
         </motion.div>
       </div>
 
+      <CreditCardSummary />
+
       <div className="grid sm:grid-cols-2 gap-4">
         <WalletHealth spent={spentThisMonth} />
         <QueenAnt expenses={data.expenses} />
@@ -81,6 +90,13 @@ export function Dashboard() {
           )}
         </div>
         <AntColony spent={spentThisMonth} />
+      </div>
+
+      <MissionBoard />
+
+      <div className="grid lg:grid-cols-2 gap-4">
+        <Achievements />
+        <FinancialTimeline />
       </div>
     </div>
   )

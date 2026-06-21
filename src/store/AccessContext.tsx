@@ -15,34 +15,30 @@ const AccessContext = createContext<AccessContextValue | null>(null)
 
 export function AccessProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth()
-  const [status, setStatus] = useState<AccessStatus>('checking')
+  const isAdmin = isAdminEmail(user?.email)
+  const [allowedStatus, setAllowedStatus] = useState<'checking' | 'allowed' | 'denied'>('checking')
 
   useEffect(() => {
-    if (!user?.email) {
-      setStatus('checking')
-      return
-    }
+    if (!user?.email || isAdmin) return
 
-    if (isAdminEmail(user.email)) {
-      setStatus('admin')
-      return
-    }
-
-    setStatus('checking')
     const ref = doc(db, 'allowedUsers', user.email.toLowerCase())
     const unsubscribe = onSnapshot(
       ref,
       (snapshot) => {
         const active = snapshot.exists() && snapshot.data().active === true
-        setStatus(active ? 'allowed' : 'denied')
+        setAllowedStatus(active ? 'allowed' : 'denied')
       },
-      () => setStatus('denied'),
+      () => setAllowedStatus('denied'),
     )
 
     return unsubscribe
-  }, [user?.email])
+  }, [user?.email, isAdmin])
 
-  return <AccessContext.Provider value={{ status, isAdmin: status === 'admin' }}>{children}</AccessContext.Provider>
+  // AccessProvider only mounts once a user exists (see Gate in App.tsx) and always
+  // fully remounts on logout/login, so deriving from render-time values here is safe.
+  const status: AccessStatus = !user?.email ? 'checking' : isAdmin ? 'admin' : allowedStatus
+
+  return <AccessContext.Provider value={{ status, isAdmin }}>{children}</AccessContext.Provider>
 }
 
 export function useAccess(): AccessContextValue {
