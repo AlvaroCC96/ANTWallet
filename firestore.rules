@@ -1,0 +1,29 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null &&
+        request.auth.token.email.lower() == 'alvarolucascc96@gmail.com';
+    }
+
+    function isAllowed() {
+      return request.auth != null &&
+        exists(/databases/$(database)/documents/allowedUsers/$(request.auth.token.email.lower())) &&
+        get(/databases/$(database)/documents/allowedUsers/$(request.auth.token.email.lower())).data.active == true;
+    }
+
+    // Admin manages the allowlist. Each user can read their own entry
+    // (to check their own access status), but only the admin can write.
+    match /allowedUsers/{email} {
+      allow read: if isAdmin() || (request.auth != null && request.auth.token.email.lower() == email);
+      allow write: if isAdmin();
+    }
+
+    // Each user can only read/write their own document at /users/{uid},
+    // and only if they're the admin or on the active allowlist.
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId && (isAdmin() || isAllowed());
+    }
+  }
+}
