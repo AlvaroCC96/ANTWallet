@@ -18,30 +18,30 @@ export function CreditCardSummary() {
       animate={{ opacity: 1, y: 0 }}
       className="bg-card border border-deep-darker/60 rounded-2xl p-5 space-y-3"
     >
-      <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+      <h3 className="text-lg font-semibold text-ink flex items-center gap-2">
         <CreditCard size={20} className="text-accent-light" /> Cupo de tarjetas de crédito
       </h3>
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-muted">
         No forma parte de tu patrimonio neto — es la capacidad de crédito disponible en tus {summary.cards.length}{' '}
         tarjeta{summary.cards.length === 1 ? '' : 's'}.
       </p>
 
       <div className="grid grid-cols-3 gap-3 text-center">
         <div>
-          <p className="text-xs text-gray-400">Cupo total</p>
-          <p className="text-sm font-bold text-white">{formatCLP(summary.totalLimit)}</p>
+          <p className="text-xs text-muted">Cupo total</p>
+          <p className="text-sm font-bold text-ink">{formatCLP(summary.totalLimit)}</p>
         </div>
         <div>
-          <p className="text-xs text-gray-400">Usado</p>
+          <p className="text-xs text-muted">Usado</p>
           <p className="text-sm font-bold text-orange-400">{formatCLP(summary.totalUsed)}</p>
         </div>
         <div>
-          <p className="text-xs text-gray-400">Disponible</p>
+          <p className="text-xs text-muted">Disponible</p>
           <p className="text-sm font-bold text-wealth">{formatCLP(summary.totalAvailable)}</p>
         </div>
       </div>
 
-      <div className="h-3 bg-black/40 rounded-full overflow-hidden">
+      <div className="h-3 bg-track rounded-full overflow-hidden">
         <motion.div
           className={`h-full ${barColor}`}
           initial={{ width: 0 }}
@@ -49,7 +49,7 @@ export function CreditCardSummary() {
           transition={{ duration: 0.6, ease: 'easeOut' }}
         />
       </div>
-      <p className="text-xs text-gray-500">{summary.utilization.toFixed(0)}% del cupo total en uso</p>
+      <p className="text-xs text-muted">{summary.utilization.toFixed(0)}% del cupo total en uso</p>
     </motion.div>
   )
 }

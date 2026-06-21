@@ -45,16 +45,16 @@ export function RPGProfileCard() {
     >
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs text-gray-400 uppercase tracking-wide">Perfil financiero</p>
-          <h2 className="text-2xl font-bold text-white">{name}</h2>
+          <p className="text-xs text-muted uppercase tracking-wide">Perfil financiero</p>
+          <h2 className="text-2xl font-bold text-ink">{name}</h2>
           <p className="text-sm text-accent-light font-medium">
             Lv. {levelInfo.level} — {title.emoji} {title.label}
           </p>
         </div>
         <div className="text-right">
-          <p className="text-xs text-gray-400">Patrimonio neto</p>
+          <p className="text-xs text-muted">Patrimonio neto</p>
           <p className={`text-xl font-bold ${net >= 0 ? 'text-wealth' : 'text-danger'}`}>{formatCLP(net)}</p>
-          <p className="text-xs text-gray-400 mt-1">{WALLET_STATUS_LABEL[status]}</p>
+          <p className="text-xs text-muted mt-1">{WALLET_STATUS_LABEL[status]}</p>
         </div>
       </div>
 

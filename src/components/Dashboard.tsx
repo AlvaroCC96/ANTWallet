@@ -44,7 +44,7 @@ export function Dashboard() {
           animate="visible"
           className="bg-card border border-deep-darker/60 rounded-2xl p-5"
         >
-          <p className="text-sm text-gray-400">Total activos</p>
+          <p className="text-sm text-muted">Total activos</p>
           <p className="text-2xl font-bold text-wealth">{formatCLP(assets)}</p>
         </motion.div>
         <motion.div
@@ -54,7 +54,7 @@ export function Dashboard() {
           transition={{ delay: 0.05 }}
           className="bg-card border border-deep-darker/60 rounded-2xl p-5"
         >
-          <p className="text-sm text-gray-400">Total deudas</p>
+          <p className="text-sm text-muted">Total deudas</p>
           <p className="text-2xl font-bold text-danger">{formatCLP(debts)}</p>
         </motion.div>
         <motion.div
@@ -64,7 +64,7 @@ export function Dashboard() {
           transition={{ delay: 0.1 }}
           className="bg-card border border-deep-darker/60 rounded-2xl p-5"
         >
-          <p className="text-sm text-gray-400">Patrimonio neto</p>
+          <p className="text-sm text-muted">Patrimonio neto</p>
           <p className={`text-2xl font-bold ${net >= 0 ? 'text-wealth' : 'text-danger'}`}>{formatCLP(net)}</p>
         </motion.div>
       </div>
@@ -78,13 +78,13 @@ export function Dashboard() {
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
+          <h3 className="text-lg font-semibold text-ink mb-3 flex items-center gap-2">
             <Skull size={20} className="text-danger" /> Jefe de deuda principal
           </h3>
           {mainBoss ? (
             <BossDebt debt={mainBoss} />
           ) : (
-            <p className="text-gray-400 text-sm bg-card border border-deep-darker/60 rounded-2xl p-5">
+            <p className="text-muted text-sm bg-card border border-deep-darker/60 rounded-2xl p-5">
               No tienes deudas activas. ¡La paz reina en el reino!
             </p>
           )}

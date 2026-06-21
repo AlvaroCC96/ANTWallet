@@ -48,17 +48,17 @@ export function MissionCard({ goal }: { goal: FinancialGoal }) {
           <span className="text-accent-light bg-card rounded-lg p-1.5">
             <missionType.Icon size={18} />
           </span>
-          <p className="font-medium text-white text-sm">{goal.title}</p>
+          <p className="font-medium text-ink text-sm">{goal.title}</p>
         </div>
-        <button onClick={() => deleteGoal(goal.id)} className="text-gray-500 hover:text-danger">
+        <button onClick={() => deleteGoal(goal.id)} className="text-muted hover:text-danger">
           <X size={14} />
         </button>
       </div>
 
-      <div className="text-xs text-gray-400">
+      <div className="text-xs text-muted">
         {formatCLP(goal.currentAmount)} / {formatCLP(goal.targetAmount)}
       </div>
-      <div className="h-2.5 bg-black/40 rounded-full overflow-hidden">
+      <div className="h-2.5 bg-track rounded-full overflow-hidden">
         <motion.div
           className={`h-full ${completed ? 'bg-wealth' : 'bg-accent'}`}
           initial={{ width: 0 }}
@@ -77,7 +77,7 @@ export function MissionCard({ goal }: { goal: FinancialGoal }) {
             value={amount}
             onChange={setAmount}
             placeholder="Agregar fondos"
-            className="flex-1 bg-card border border-accent-soft/40 rounded-lg px-2 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-accent-light"
+            className="flex-1 bg-card border border-accent-soft/40 rounded-lg px-2 py-1.5 text-xs text-ink placeholder-muted focus:outline-none focus:border-accent-light"
           />
           <button
             type="submit"

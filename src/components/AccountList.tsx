@@ -8,7 +8,7 @@ import { CurrencyInput } from './CurrencyInput'
 import { Icon } from './Icon'
 
 const inputClass =
-  'flex-1 bg-card border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-light'
+  'flex-1 bg-card border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-ink placeholder-muted focus:outline-none focus:border-accent-light'
 
 export function AccountList() {
   const { data, deleteAccount, adjustAccountBalance } = useApp()
@@ -17,7 +17,7 @@ export function AccountList() {
   const [amount, setAmount] = useState('')
 
   if (data.accounts.length === 0) {
-    return <p className="text-gray-400 text-sm">Aún no agregas cuentas. ¡Crea la primera!</p>
+    return <p className="text-muted text-sm">Aún no agregas cuentas. ¡Crea la primera!</p>
   }
 
   function handleAdjust(id: string, sign: 1 | -1) {
@@ -46,8 +46,8 @@ export function AccountList() {
                   <Icon name={account.icon} size={26} />
                 </span>
                 <div>
-                  <p className="font-semibold text-white">{account.accountName}</p>
-                  <p className="text-xs text-gray-400">{account.bankName}</p>
+                  <p className="font-semibold text-ink">{account.accountName}</p>
+                  <p className="text-xs text-muted">{account.bankName}</p>
                   <p className="text-wealth font-bold">{formatCLP(account.balance)}</p>
                 </div>
               </div>
@@ -57,14 +57,14 @@ export function AccountList() {
                     setOpenId(openId === account.id ? null : account.id)
                     setAmount('')
                   }}
-                  className="text-gray-400 hover:text-accent-light"
+                  className="text-muted hover:text-accent-light"
                   aria-label="Editar saldo"
                 >
                   <Pencil size={16} />
                 </button>
                 <button
                   onClick={() => deleteAccount(account.id)}
-                  className="text-gray-500 hover:text-danger"
+                  className="text-muted hover:text-danger"
                   aria-label="Eliminar cuenta"
                 >
                   <X size={16} />

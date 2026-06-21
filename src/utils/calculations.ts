@@ -32,15 +32,15 @@ export interface QueenAnt {
 
 const QUEEN_PHRASES: Record<string, string> = {
   'cafe-snacks': 'La Reina Hormiga se tomó todo el presupuesto en cafecitos.',
-  delivery: 'Ese ejército venía con papas fritas.',
-  gaming: 'La Reina Hormiga subió de nivel, tu billetera no.',
+  'delivery': 'Ese ejército venía con papas fritas.',
+  'gaming': 'La Reina Hormiga subió de nivel, tu billetera no.',
   'compras-impulsivas': 'Compró todo el hormiguero sin preguntar.',
   'salidas-pamela': 'El amor cuesta caro, pero vale la pena.',
-  cobreloa: 'La pasión nortina golpeó fuerte la billetera.',
-  viajes: 'La colonia se fue de vacaciones sin avisar.',
+  'cobreloa': 'La pasión nortina golpeó fuerte la billetera.',
+  'viajes': 'La colonia se fue de vacaciones sin avisar.',
   'auto-groove': 'El auto pidió su propio sueldo este mes.',
-  developer: 'Invirtió en hardware "para ser más productivo".',
-  suscripciones: 'Mil hormigas pequeñas cobrando cada mes.',
+  'developer': 'Invirtió en hardware "para ser más productivo".',
+  'suscripciones': 'Mil hormigas pequeñas cobrando cada mes.',
   'servicios-basicos': 'La luz, el agua y el gas también tienen su propio ejército.',
 }
 

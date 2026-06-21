@@ -11,7 +11,7 @@ export function ExpenseList() {
   const sorted = [...data.expenses].sort((a, b) => b.createdAt.localeCompare(a.createdAt))
 
   if (sorted.length === 0) {
-    return <p className="text-gray-400 text-sm">Aún no registras gastos hormiga. ¡La colonia está tranquila!</p>
+    return <p className="text-muted text-sm">Aún no registras gastos hormiga. ¡La colonia está tranquila!</p>
   }
 
   return (
@@ -33,8 +33,8 @@ export function ExpenseList() {
                   <CategoryIcon size={20} />
                 </span>
                 <div>
-                  <p className="font-medium text-white text-sm">{expense.name}</p>
-                  <p className="text-xs text-gray-400">
+                  <p className="font-medium text-ink text-sm">{expense.name}</p>
+                  <p className="text-xs text-muted">
                     {category?.label} · {formatDate(expense.date)}
                     {expense.note ? ` · ${expense.note}` : ''}
                   </p>
@@ -42,7 +42,7 @@ export function ExpenseList() {
               </div>
               <div className="flex items-center gap-3">
                 <span className="text-orange-400 font-bold text-sm">{formatCLP(expense.amount)}</span>
-                <button onClick={() => deleteExpense(expense.id)} className="text-gray-500 hover:text-danger">
+                <button onClick={() => deleteExpense(expense.id)} className="text-muted hover:text-danger">
                   <X size={16} />
                 </button>
               </div>

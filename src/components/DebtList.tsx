@@ -6,7 +6,7 @@ export function DebtList() {
   const { data } = useApp()
 
   if (data.debts.length === 0) {
-    return <p className="text-gray-400 text-sm">No hay jefes de deuda activos. ¡Disfruta la paz!</p>
+    return <p className="text-muted text-sm">No hay jefes de deuda activos. ¡Disfruta la paz!</p>
   }
 
   return (

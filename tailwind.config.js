@@ -5,6 +5,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Semantic financial colors stay constant across themes — their meaning
+        // (good/bad/caution) must not change when the user switches light/dark.
         wealth: {
           DEFAULT: '#22c55e',
           dark: '#15803d',
@@ -16,22 +18,31 @@ export default {
         warning: {
           DEFAULT: '#f97316',
         },
+        // Everything else is theme-aware via CSS variables (see index.css for the
+        // light `:root` and dark `.dark` values), so existing classNames like
+        // `bg-card` or `text-ink` automatically follow the active theme.
         card: {
-          DEFAULT: '#141a23',
-          alt: '#1c2430',
+          DEFAULT: 'rgb(var(--color-card) / <alpha-value>)',
+          alt: 'rgb(var(--color-card-alt) / <alpha-value>)',
         },
         deep: {
-          DEFAULT: '#0b0e14',
-          darker: '#2a3340',
-          violet: '#6d28d9',
-          magenta: '#a21caf',
+          DEFAULT: 'rgb(var(--color-deep) / <alpha-value>)',
+          darker: 'rgb(var(--color-deep-darker) / <alpha-value>)',
+          violet: 'rgb(var(--color-deep-violet) / <alpha-value>)',
+          magenta: 'rgb(var(--color-deep-magenta) / <alpha-value>)',
         },
         accent: {
-          DEFAULT: '#6366f1',
-          light: '#818cf8',
-          dark: '#3730a3',
-          soft: '#4338ca',
+          DEFAULT: 'rgb(var(--color-accent) / <alpha-value>)',
+          light: 'rgb(var(--color-accent-light) / <alpha-value>)',
+          dark: 'rgb(var(--color-accent-dark) / <alpha-value>)',
+          soft: 'rgb(var(--color-accent-soft) / <alpha-value>)',
         },
+        ink: {
+          DEFAULT: 'rgb(var(--color-ink) / <alpha-value>)',
+          soft: 'rgb(var(--color-ink-soft) / <alpha-value>)',
+        },
+        muted: 'rgb(var(--color-muted) / <alpha-value>)',
+        track: 'rgb(var(--color-track) / <alpha-value>)',
       },
       keyframes: {
         shake: {

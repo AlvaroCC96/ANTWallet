@@ -10,7 +10,7 @@ import { getIconComponent } from './Icon'
 import { getExpenseXP } from '../utils/rpg'
 
 const inputClass =
-  'w-full bg-card-alt border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-light'
+  'w-full bg-card-alt border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-ink placeholder-muted focus:outline-none focus:border-accent-light'
 
 const SHAKE_THRESHOLD = 20000
 
@@ -68,7 +68,7 @@ export function ExpenseForm() {
 
   return (
     <form onSubmit={handleSubmit} className="bg-card border border-deep-darker/60 rounded-2xl p-5 space-y-3">
-      <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+      <h3 className="text-lg font-semibold text-ink flex items-center gap-2">
         <Bug size={20} className="text-accent-light" /> Registrar gasto hormiga
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

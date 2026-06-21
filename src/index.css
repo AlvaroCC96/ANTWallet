@@ -2,8 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Light theme (default) — sage/olive palette. RGB triplets (no commas) so
+   Tailwind's `rgb(var(--x) / <alpha-value>)` opacity modifiers keep working. */
 :root {
+  color-scheme: light;
+
+  --color-deep: 251 253 248; /* frosted_mint 900 */
+  --color-deep-darker: 184 194 167; /* palm_leaf 700 */
+  --color-deep-violet: 181 201 154; /* muted_olive (b5c99a family) DEFAULT */
+  --color-deep-magenta: 127 171 73; /* tea_green 300 */
+  --color-card: 242 249 233; /* frosted_mint 700 */
+  --color-card-alt: 235 243 226; /* tea_green 800 */
+  --color-accent: 113 131 85; /* dusty_olive DEFAULT */
+  --color-accent-light: 135 152 106; /* palm_leaf DEFAULT */
+  --color-accent-dark: 67 78 51; /* dusty_olive 300 */
+  --color-accent-soft: 121 141 92; /* muted_olive (97a97c family) 400 */
+  --color-ink: 26 31 20;
+  --color-ink-soft: 67 78 51;
+  --color-muted: 91 106 69;
+  --color-track: 211 223 195;
+}
+
+/* Dark theme — the original navy/indigo RPG look. */
+.dark {
   color-scheme: dark;
+
+  --color-deep: 11 14 20;
+  --color-deep-darker: 42 51 64;
+  --color-deep-violet: 109 40 217;
+  --color-deep-magenta: 162 28 175;
+  --color-card: 20 26 35;
+  --color-card-alt: 28 36 48;
+  --color-accent: 99 102 241;
+  --color-accent-light: 129 140 248;
+  --color-accent-dark: 55 48 163;
+  --color-accent-soft: 67 56 202;
+  --color-ink: 243 244 246;
+  --color-ink-soft: 209 213 219;
+  --color-muted: 156 163 175;
+  --color-track: 35 42 53;
 }
 
 html,
@@ -11,9 +48,10 @@ body,
 #root {
   margin: 0;
   min-height: 100vh;
-  background: #0b0e14;
-  color: #e5e7eb;
+  background: rgb(var(--color-deep));
+  color: rgb(var(--color-ink));
   font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 * {
@@ -24,9 +62,9 @@ body,
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #141a23;
+  background: rgb(var(--color-card));
 }
 ::-webkit-scrollbar-thumb {
-  background: #4338ca;
+  background: rgb(var(--color-accent-soft));
   border-radius: 8px;
 }

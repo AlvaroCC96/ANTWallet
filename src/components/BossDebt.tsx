@@ -20,7 +20,7 @@ const LIFE_STATE_STYLE: Record<string, { bar: string; badge: string }> = {
   strong: { bar: 'bg-wealth', badge: 'text-wealth bg-wealth/10' },
   wounded: { bar: 'bg-warning', badge: 'text-warning bg-warning/10' },
   critical: { bar: 'bg-danger', badge: 'text-danger bg-danger/10' },
-  defeated: { bar: 'bg-gray-600', badge: 'text-gray-400 bg-gray-600/10' },
+  defeated: { bar: 'bg-gray-500', badge: 'text-muted bg-gray-500/10' },
 }
 
 export function BossDebt({ debt }: { debt: Debt }) {
@@ -89,27 +89,27 @@ export function BossDebt({ debt }: { debt: Debt }) {
 
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className={`p-2 rounded-lg bg-deep ${defeated ? 'text-gray-400' : 'text-danger'}`}>
+          <span className={`p-2 rounded-lg bg-deep ${defeated ? 'text-muted' : 'text-danger'}`}>
             {defeated ? <Skull size={26} /> : <Icon name={debt.icon} size={26} />}
           </span>
           <div>
-            <p className="font-bold text-white">{debt.name}</p>
-            <p className="text-xs text-gray-400">
+            <p className="font-bold text-ink">{debt.name}</p>
+            <p className="text-xs text-muted">
               {debt.institution} · {bossName.emoji} {bossName.name}
             </p>
           </div>
         </div>
-        <button onClick={() => deleteDebt(debt.id)} className="text-gray-500 hover:text-danger">
+        <button onClick={() => deleteDebt(debt.id)} className="text-muted hover:text-danger">
           <X size={16} />
         </button>
       </div>
 
       <div>
-        <div className="flex justify-between text-xs text-gray-400 mb-1">
+        <div className="flex justify-between text-xs text-muted mb-1">
           <span className={`px-1.5 py-0.5 rounded ${style.badge}`}>{BOSS_LIFE_STATE_LABEL[lifeState]}</span>
           <span>{formatCLP(debt.remainingAmount)} / {formatCLP(debt.totalAmount)}</span>
         </div>
-        <div className="h-3 bg-black/40 rounded-full overflow-hidden">
+        <div className="h-3 bg-track rounded-full overflow-hidden">
           <motion.div
             className={`h-full ${style.bar}`}
             initial={{ width: 0 }}
@@ -118,7 +118,7 @@ export function BossDebt({ debt }: { debt: Debt }) {
           />
         </div>
         {debt.isCreditCard && (
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-muted mt-1">
             💳 Cupo: {formatCLP(debt.totalAmount)} · Usado: {formatCLP(debt.remainingAmount)} · Disponible:{' '}
             {formatCLP(Math.max(0, debt.totalAmount - debt.remainingAmount))}
           </p>
@@ -135,7 +135,7 @@ export function BossDebt({ debt }: { debt: Debt }) {
             placeholder="Monto del ataque"
             value={amount}
             onChange={setAmount}
-            className="flex-1 bg-card-alt border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-light"
+            className="flex-1 bg-card-alt border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-ink placeholder-muted focus:outline-none focus:border-accent-light"
           />
           <button
             type="submit"

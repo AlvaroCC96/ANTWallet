@@ -45,13 +45,13 @@ export function Select({ value, onChange, options, placeholder, className }: Sel
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="w-full bg-card-alt border border-accent-soft/40 rounded-lg pl-3 pr-2 py-2 text-sm text-white text-left flex items-center justify-between gap-2 focus:outline-none focus:border-accent-light hover:border-accent-soft/70 transition-colors"
+        className="w-full bg-card-alt border border-accent-soft/40 rounded-lg pl-3 pr-2 py-2 text-sm text-ink text-left flex items-center justify-between gap-2 focus:outline-none focus:border-accent-light hover:border-accent-soft/70 transition-colors"
       >
-        <span className={`flex items-center gap-2 truncate ${selected ? '' : 'text-gray-500'}`}>
+        <span className={`flex items-center gap-2 truncate ${selected ? '' : 'text-muted'}`}>
           {selected?.icon && <selected.icon size={16} className="text-accent-light shrink-0" />}
           {selected?.label ?? placeholder}
         </span>
-        <ChevronDown size={16} className={`text-gray-400 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown size={16} className={`text-muted shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
 
       <AnimatePresence>
@@ -74,7 +74,7 @@ export function Select({ value, onChange, options, placeholder, className }: Sel
                     setOpen(false)
                   }}
                   className={`w-full flex items-center gap-2 px-3 py-2 text-sm text-left transition-colors ${
-                    isSelected ? 'text-accent-light bg-accent/10' : 'text-gray-200 hover:bg-deep-darker/60'
+                    isSelected ? 'text-accent-light bg-accent/10' : 'text-ink hover:bg-deep-darker/60'
                   }`}
                 >
                   {option.icon && <option.icon size={16} className="shrink-0" />}

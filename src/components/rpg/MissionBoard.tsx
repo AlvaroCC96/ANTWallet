@@ -8,7 +8,7 @@ import { Select } from '../Select'
 import { MissionCard } from './MissionCard'
 
 const inputClass =
-  'w-full bg-card-alt border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-light'
+  'w-full bg-card-alt border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-ink placeholder-muted focus:outline-none focus:border-accent-light'
 
 export function MissionBoard() {
   const { data, addGoal } = useApp()
@@ -40,7 +40,7 @@ export function MissionBoard() {
 
   return (
     <div className="bg-card border border-deep-darker/60 rounded-2xl p-5 space-y-4">
-      <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+      <h3 className="text-lg font-semibold text-ink flex items-center gap-2">
         <Target size={20} className="text-accent-light" /> Misiones financieras
       </h3>
 
@@ -62,7 +62,7 @@ export function MissionBoard() {
       </form>
 
       {data.goals.length === 0 ? (
-        <p className="text-gray-400 text-sm">Aún no tienes misiones activas. ¡Crea la primera!</p>
+        <p className="text-muted text-sm">Aún no tienes misiones activas. ¡Crea la primera!</p>
       ) : (
         <div className="grid sm:grid-cols-2 gap-3">
           {data.goals.map((goal) => (

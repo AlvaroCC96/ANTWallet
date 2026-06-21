@@ -40,12 +40,12 @@ export function UserBadge() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Tu nombre"
-          className="bg-card-alt border border-accent-soft/40 rounded-lg px-2 py-1 text-sm text-white w-32 focus:outline-none focus:border-accent-light"
+          className="bg-card-alt border border-accent-soft/40 rounded-lg px-2 py-1 text-sm text-ink w-32 focus:outline-none focus:border-accent-light"
         />
         <button type="submit" disabled={saving} className="text-accent-light hover:text-accent-soft disabled:opacity-50">
           <Check size={16} />
         </button>
-        <button type="button" onClick={() => setEditing(false)} className="text-gray-500 hover:text-danger">
+        <button type="button" onClick={() => setEditing(false)} className="text-muted hover:text-danger">
           <X size={16} />
         </button>
       </form>
@@ -59,11 +59,11 @@ export function UserBadge() {
           setName(displayName ?? '')
           setEditing(true)
         }}
-        className="text-sm text-white font-medium flex items-center gap-1.5 justify-end hover:text-accent-light transition-colors"
+        className="text-sm text-ink font-medium flex items-center gap-1.5 justify-end hover:text-accent-light transition-colors"
       >
-        {shownName} <Pencil size={12} className="text-gray-500" />
+        {shownName} <Pencil size={12} className="text-muted" />
       </button>
-      <button onClick={logOut} className="text-xs text-gray-400 hover:text-danger flex items-center gap-1 mt-1 justify-end">
+      <button onClick={logOut} className="text-xs text-muted hover:text-danger flex items-center gap-1 mt-1 justify-end">
         <LogOut size={12} /> Cerrar sesión
       </button>
     </div>

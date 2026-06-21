@@ -10,11 +10,11 @@ export function FinancialTimeline() {
 
   return (
     <div className="bg-card border border-deep-darker/60 rounded-2xl p-5">
-      <h3 className="text-lg font-semibold text-white flex items-center gap-2 mb-3">
+      <h3 className="text-lg font-semibold text-ink flex items-center gap-2 mb-3">
         <History size={20} className="text-accent-light" /> Línea de tiempo financiera
       </h3>
       {events.length === 0 ? (
-        <p className="text-gray-400 text-sm">Aún no hay actividad registrada.</p>
+        <p className="text-muted text-sm">Aún no hay actividad registrada.</p>
       ) : (
         <div className="space-y-2 max-h-80 overflow-y-auto pr-1">
           {events.map((event, i) => (
@@ -26,8 +26,8 @@ export function FinancialTimeline() {
               className="flex items-center gap-3 bg-card-alt border border-deep-darker/40 rounded-lg px-3 py-2"
             >
               <event.icon size={16} className="text-accent-light shrink-0" />
-              <p className="text-sm text-gray-200 flex-1">{event.message}</p>
-              <span className="text-xs text-gray-500 whitespace-nowrap">{formatDate(event.date)}</span>
+              <p className="text-sm text-ink-soft flex-1">{event.message}</p>
+              <span className="text-xs text-muted whitespace-nowrap">{formatDate(event.date)}</span>
             </motion.div>
           ))}
         </div>

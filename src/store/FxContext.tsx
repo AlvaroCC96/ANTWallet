@@ -68,7 +68,7 @@ export function FxProvider({ children }: { children: ReactNode }) {
               initial={{ opacity: 0, y: -20, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, x: 50 }}
-              className="bg-card border border-accent-soft/50 text-white px-4 py-3 rounded-xl shadow-lg max-w-xs text-sm flex items-center gap-2"
+              className="bg-card border border-accent-soft/50 text-ink px-4 py-3 rounded-xl shadow-lg max-w-xs text-sm flex items-center gap-2"
             >
               <t.icon size={18} className="text-accent-light shrink-0" />
               {t.message}
@@ -98,12 +98,12 @@ export function FxProvider({ children }: { children: ReactNode }) {
               transition={{ type: 'spring', stiffness: 200, damping: 12 }}
               className="bg-gradient-to-br from-deep-magenta to-card border border-yellow-500/50 rounded-2xl p-8 text-center max-w-sm shadow-2xl"
             >
-              <div className="flex items-center justify-center gap-2 mb-3 text-yellow-400">
+              <div className="flex items-center justify-center gap-2 mb-3 text-yellow-500">
                 <Icon name={bossDefeated.icon} size={48} />
                 <Skull size={48} />
               </div>
-              <h2 className="text-2xl font-bold text-yellow-400 mb-1">¡Jefe derrotado!</h2>
-              <p className="text-gray-300">
+              <h2 className="text-2xl font-bold text-yellow-500 mb-1">¡Jefe derrotado!</h2>
+              <p className="text-ink">
                 <span className="font-semibold">{bossDefeated.name}</span> ha sido eliminado. Deuda saldada por
                 completo.
               </p>

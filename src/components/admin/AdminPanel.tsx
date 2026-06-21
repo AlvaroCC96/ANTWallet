@@ -11,7 +11,7 @@ interface AllowedUser {
 }
 
 const inputClass =
-  'flex-1 bg-card-alt border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-light'
+  'flex-1 bg-card-alt border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-ink placeholder-muted focus:outline-none focus:border-accent-light'
 
 export function AdminPanel() {
   const [users, setUsers] = useState<AllowedUser[]>([])
@@ -57,7 +57,7 @@ export function AdminPanel() {
 
   return (
     <div className="bg-card border border-deep-darker/60 rounded-2xl p-5 space-y-4">
-      <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+      <h3 className="text-lg font-semibold text-ink flex items-center gap-2">
         <Users size={20} className="text-accent-light" /> Usuarios permitidos
       </h3>
 
@@ -78,9 +78,9 @@ export function AdminPanel() {
       {error && <p className="text-danger text-sm">{error}</p>}
 
       {loading ? (
-        <p className="text-gray-400 text-sm">Cargando...</p>
+        <p className="text-muted text-sm">Cargando...</p>
       ) : users.length === 0 ? (
-        <p className="text-gray-400 text-sm">Aún no agregas a nadie. Solo tú tienes acceso.</p>
+        <p className="text-muted text-sm">Aún no agregas a nadie. Solo tú tienes acceso.</p>
       ) : (
         <div className="space-y-2">
           {users.map((u) => (
@@ -89,20 +89,20 @@ export function AdminPanel() {
               className="bg-card-alt border border-deep-darker/50 rounded-xl px-4 py-3 flex items-center justify-between gap-3"
             >
               <div>
-                <p className="text-white text-sm font-medium">{u.email}</p>
-                <p className="text-xs text-gray-400">Agregado el {u.addedAt}</p>
+                <p className="text-ink text-sm font-medium">{u.email}</p>
+                <p className="text-xs text-muted">Agregado el {u.addedAt}</p>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => handleToggle(u.email, u.active)}
                   className={`text-xs font-semibold px-2.5 py-1.5 rounded-lg flex items-center gap-1.5 ${
-                    u.active ? 'bg-wealth/15 text-wealth' : 'bg-gray-700/30 text-gray-400'
+                    u.active ? 'bg-wealth/15 text-wealth' : 'bg-track text-muted'
                   }`}
                 >
                   {u.active ? <ShieldCheck size={14} /> : <ShieldOff size={14} />}
                   {u.active ? 'Activo' : 'Inactivo'}
                 </button>
-                <button onClick={() => handleDelete(u.email)} className="text-gray-500 hover:text-danger">
+                <button onClick={() => handleDelete(u.email)} className="text-muted hover:text-danger">
                   <Trash2 size={16} />
                 </button>
               </div>

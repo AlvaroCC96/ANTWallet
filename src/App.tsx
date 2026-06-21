@@ -4,9 +4,11 @@ import { AuthProvider, useAuth } from './store/AuthContext'
 import { AccessProvider, useAccess } from './store/AccessContext'
 import { AppProvider, useApp } from './store/AppContext'
 import { FxProvider } from './store/FxContext'
+import { ThemeProvider } from './store/ThemeContext'
 import { AuthScreen } from './components/auth/AuthScreen'
 import { AccessDeniedNotice } from './components/auth/AccessDeniedNotice'
 import { UserBadge } from './components/UserBadge'
+import { ThemeToggle } from './components/ThemeToggle'
 import { AchievementWatcher } from './components/rpg/AchievementWatcher'
 
 // Each tab's content is loaded on demand: keeps the initial bundle (login +
@@ -63,12 +65,15 @@ function AppContent() {
       <AchievementWatcher />
       <header className="border-b border-deep-darker/60 px-4 sm:px-8 py-4 flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-ink flex items-center gap-2">
             <Bug className="text-accent-light" /> ANT<span className="text-accent-light">Wallet</span>
           </h1>
-          <p className="text-sm text-gray-400">Tu billetera, atacada por hormigas y defendida por ti.</p>
+          <p className="text-sm text-muted">Tu billetera, atacada por hormigas y defendida por ti.</p>
         </div>
-        <UserBadge />
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <UserBadge />
+        </div>
       </header>
 
       <nav className="flex flex-wrap gap-2 px-4 sm:px-8 py-3 border-b border-deep-darker/40">
@@ -77,7 +82,7 @@ function AppContent() {
             key={t.id}
             onClick={() => setTab(t.id)}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 ${
-              tab === t.id ? 'bg-accent text-white' : 'bg-card text-gray-400 hover:text-white'
+              tab === t.id ? 'bg-accent text-white' : 'bg-card text-muted hover:text-ink'
             }`}
           >
             <t.icon size={16} />
@@ -152,9 +157,11 @@ function Gate() {
 
 function App() {
   return (
-    <AuthProvider>
-      <Gate />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Gate />
+      </AuthProvider>
+    </ThemeProvider>
   )
 }
 

@@ -57,14 +57,14 @@ export function WalletHealth({ spent }: { spent: number }) {
   return (
     <motion.div ref={scope} className="bg-card border border-deep-darker/60 rounded-2xl p-5 space-y-3">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-ink flex items-center gap-2">
           <Wallet size={20} className="text-accent-light" /> Vida de la billetera
         </h3>
         <span className={`text-sm font-semibold flex items-center gap-1 ${STATUS_TEXT_COLOR[status]}`}>
           <StatusIcon size={16} /> {STATUS_LABEL[status]}
         </span>
       </div>
-      <div className="h-4 bg-black/40 rounded-full overflow-hidden">
+      <div className="h-4 bg-track rounded-full overflow-hidden">
         <motion.div
           className={`h-full ${STATUS_COLOR[status]}`}
           initial={{ width: 0 }}
@@ -75,22 +75,22 @@ export function WalletHealth({ spent }: { spent: number }) {
 
       {editing ? (
         <form onSubmit={handleSave} className="flex items-center gap-2">
-          <span className="text-xs text-gray-400 whitespace-nowrap">Presupuesto mensual:</span>
+          <span className="text-xs text-muted whitespace-nowrap">Presupuesto mensual:</span>
           <CurrencyInput
             value={draftBudget}
             onChange={setDraftBudget}
             placeholder="150.000"
-            className="flex-1 bg-card-alt border border-accent-soft/40 rounded-lg px-2 py-1 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-light"
+            className="flex-1 bg-card-alt border border-accent-soft/40 rounded-lg px-2 py-1 text-sm text-ink placeholder-muted focus:outline-none focus:border-accent-light"
           />
           <button type="submit" className="text-accent-light hover:text-accent-soft">
             <Check size={16} />
           </button>
-          <button type="button" onClick={() => setEditing(false)} className="text-gray-500 hover:text-danger">
+          <button type="button" onClick={() => setEditing(false)} className="text-muted hover:text-danger">
             <X size={16} />
           </button>
         </form>
       ) : (
-        <p className="text-xs text-gray-400 flex items-center gap-1.5">
+        <p className="text-xs text-muted flex items-center gap-1.5">
           Gastado este mes: <span className="text-orange-400 font-semibold">{formatCLP(spent)}</span> de{' '}
           {formatCLP(budget)}
           <button
@@ -98,7 +98,7 @@ export function WalletHealth({ spent }: { spent: number }) {
               setDraftBudget(String(budget))
               setEditing(true)
             }}
-            className="text-gray-500 hover:text-accent-light"
+            className="text-muted hover:text-accent-light"
             aria-label="Editar presupuesto mensual"
           >
             <Pencil size={12} />

@@ -63,10 +63,10 @@ export function ExportImport() {
   return (
     <div className="space-y-4">
       <div className="bg-card border border-deep-darker/60 rounded-2xl p-5 space-y-3">
-        <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-ink flex items-center gap-2">
           <Wallet size={20} className="text-accent-light" /> Presupuesto mensual de gastos hormiga
         </h3>
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-muted">
           Este monto define la "vida de tu billetera": actualmente es {formatCLP(data.settings.monthlyAntBudget)}.
         </p>
         <form onSubmit={handleSaveBudget} className="flex gap-2">
@@ -74,7 +74,7 @@ export function ExportImport() {
             value={draftBudget}
             onChange={setDraftBudget}
             placeholder="150.000"
-            className="flex-1 bg-card-alt border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-light"
+            className="flex-1 bg-card-alt border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-ink placeholder-muted focus:outline-none focus:border-accent-light"
           />
           <button
             type="submit"
@@ -86,7 +86,7 @@ export function ExportImport() {
       </div>
 
       <div className="bg-card border border-deep-darker/60 rounded-2xl p-5 space-y-3">
-        <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+        <h3 className="text-lg font-semibold text-ink flex items-center gap-2">
           <Settings size={20} className="text-accent-light" /> Datos
         </h3>
         <div className="flex flex-wrap gap-2">

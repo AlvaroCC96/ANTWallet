@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Bug } from 'lucide-react'
 import { useAuth } from '../../store/AuthContext'
 import { extractAuthErrorCode, getAuthErrorMessage } from '../../utils/authErrors'
+import { ThemeToggle } from '../ThemeToggle'
 
 export function AuthScreen() {
   const { logInWithGoogle } = useAuth()
@@ -21,13 +22,16 @@ export function AuthScreen() {
   }
 
   return (
-    <div className="min-h-screen bg-deep flex items-center justify-center p-4">
+    <div className="min-h-screen bg-deep flex items-center justify-center p-4 relative">
+      <div className="absolute top-4 right-4">
+        <ThemeToggle />
+      </div>
       <div className="w-full max-w-sm bg-card border border-deep-darker/60 rounded-2xl p-6 space-y-5 text-center">
         <div className="space-y-1">
-          <div className="flex items-center justify-center gap-2 text-2xl font-bold text-white">
+          <div className="flex items-center justify-center gap-2 text-2xl font-bold text-ink">
             <Bug className="text-accent-light" /> ANT<span className="text-accent-light">Wallet</span>
           </div>
-          <p className="text-sm text-gray-400">Inicia sesión con tu cuenta de Google para ver tu colonia</p>
+          <p className="text-sm text-muted">Inicia sesión con tu cuenta de Google para ver tu colonia</p>
         </div>
 
         {error && <p className="text-danger text-sm">{error}</p>}

@@ -16,7 +16,7 @@ const ACCOUNT_TYPES: { value: AccountType; label: string; icon: string; Icon: ty
 ]
 
 const inputClass =
-  'w-full bg-card-alt border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-accent-light'
+  'w-full bg-card-alt border border-accent-soft/40 rounded-lg px-3 py-2 text-sm text-ink placeholder-muted focus:outline-none focus:border-accent-light'
 
 export function AccountForm() {
   const { addAccount } = useApp()
@@ -48,7 +48,7 @@ export function AccountForm() {
 
   return (
     <form onSubmit={handleSubmit} className="bg-card border border-deep-darker/60 rounded-2xl p-5 space-y-3">
-      <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+      <h3 className="text-lg font-semibold text-ink flex items-center gap-2">
         <Plus size={20} className="text-accent-light" /> Agregar cuenta
       </h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
