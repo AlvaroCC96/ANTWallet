@@ -46,7 +46,7 @@ export function AccountForm() {
       <h3 className="text-lg font-semibold text-white flex items-center gap-2">
         <Plus size={20} className="text-accent-light" /> Agregar cuenta
       </h3>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <input
           className={inputClass}
           placeholder="Banco / Institución"
@@ -60,7 +60,7 @@ export function AccountForm() {
           onChange={(e) => setAccountName(e.target.value)}
         />
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Select
           value={accountType}
           onChange={(value) => {

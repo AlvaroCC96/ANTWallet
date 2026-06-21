@@ -67,11 +67,11 @@ export function ExpenseForm() {
       <h3 className="text-lg font-semibold text-white flex items-center gap-2">
         <Bug size={20} className="text-accent-light" /> Registrar gasto hormiga
       </h3>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <input className={inputClass} placeholder="Nombre del gasto" value={name} onChange={(e) => setName(e.target.value)} />
         <CurrencyInput className={inputClass} placeholder="Monto" value={amount} onChange={setAmount} />
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <Select
           value={category}
           onChange={setCategory}

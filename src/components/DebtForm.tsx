@@ -49,7 +49,7 @@ export function DebtForm() {
       <h3 className="text-lg font-semibold text-white flex items-center gap-2">
         <Skull size={20} className="text-danger" /> Agregar jefe de deuda
       </h3>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <input className={inputClass} placeholder="Nombre de la deuda" value={name} onChange={(e) => setName(e.target.value)} />
         <input
           className={inputClass}
@@ -58,7 +58,7 @@ export function DebtForm() {
           onChange={(e) => setInstitution(e.target.value)}
         />
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <CurrencyInput className={inputClass} placeholder="Monto total" value={totalAmount} onChange={setTotalAmount} />
         <CurrencyInput
           className={inputClass}
