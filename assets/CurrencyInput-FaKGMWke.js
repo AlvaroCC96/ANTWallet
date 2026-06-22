@@ -1,0 +1,1 @@
+import{a as e}from"./dates-BUm3NrtQ.js";import{n as t,r as n}from"./currency-CaoEnKqh.js";var r=e();function i({value:e,onChange:i,placeholder:a,className:o}){return(0,r.jsx)(`input`,{type:`text`,inputMode:`numeric`,placeholder:a,value:t(e),onChange:e=>i(n(e.target.value)),className:o})}export{i as t};

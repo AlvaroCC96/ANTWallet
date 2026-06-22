@@ -1,0 +1,1 @@
+function e(e){return new Intl.NumberFormat(`es-CL`,{style:`currency`,currency:`CLP`,maximumFractionDigits:0}).format(e)}function t(e){return e?Number(e).toLocaleString(`es-CL`):``}function n(e){return e.replace(/\D/g,``)}export{t as n,n as r,e as t};
