@@ -7,7 +7,7 @@ import { FxProvider } from './store/FxContext'
 import { ThemeProvider } from './store/ThemeContext'
 import { AuthScreen } from './components/auth/AuthScreen'
 import { AccessDeniedNotice } from './components/auth/AccessDeniedNotice'
-import { UserBadge } from './components/UserBadge'
+import { UserMenu } from './components/UserMenu'
 import { ThemeToggle } from './components/ThemeToggle'
 import { AchievementWatcher } from './components/rpg/AchievementWatcher'
 import { AIEventWatcher } from './components/ai/AIEventWatcher'
@@ -65,16 +65,16 @@ function AppContent() {
     <div className="min-h-screen bg-deep">
       <AchievementWatcher />
       <AIEventWatcher />
-      <header className="border-b border-deep-darker/60 px-4 sm:px-8 py-4 flex items-start justify-between gap-4">
-        <div>
+      <header className="border-b border-deep-darker/60 px-4 sm:px-8 py-4 flex items-center justify-between gap-3">
+        <div className="min-w-0">
           <h1 className="text-2xl font-bold text-ink flex items-center gap-2">
             <Bug className="text-accent-light" /> ANT<span className="text-accent-light">Wallet</span>
           </h1>
-          <p className="text-sm text-muted">Tu billetera, atacada por hormigas y defendida por ti.</p>
+          <p className="text-sm text-muted hidden sm:block">Tu billetera, atacada por hormigas y defendida por ti.</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 shrink-0">
           <ThemeToggle />
-          <UserBadge />
+          <UserMenu />
         </div>
       </header>
 
