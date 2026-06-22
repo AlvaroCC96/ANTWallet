@@ -56,6 +56,9 @@ No es una maqueta — es la app que uso para llevar mis cuentas reales.
 
 </td>
 </tr>
+</table>
+
+<table>
 <tr>
 <td width="33%">
 
