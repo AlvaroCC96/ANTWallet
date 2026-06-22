@@ -121,14 +121,29 @@ npm run build      # build de producción
 npm run preview     # previsualizarlo localmente
 ```
 
-El proyecto ya viene configurado para **GitHub Pages**:
+El proyecto ya viene configurado para **GitHub Pages**, de dos formas:
+
+### Automático (recomendado)
+
+Cada push a `main` dispara [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml):
+compila el proyecto y publica `dist/` en la rama `gh-pages` solo. No necesitas
+hacer nada más que mergear a `main`.
+
+Para que el build funcione en CI, las variables `VITE_FIREBASE_*` deben estar
+guardadas como **secrets del repositorio** (no como `.env`, eso es solo
+local): **Settings → Secrets and variables → Actions → New repository
+secret**, una por cada variable de tu `.env`.
+
+### Manual
 
 ```bash
 npm run deploy
 ```
 
-Esto construye el proyecto y publica `dist/` en la rama `gh-pages`. Antes de
-hacerlo por primera vez:
+Construye el proyecto y publica `dist/` en `gh-pages` directamente desde tu
+máquina (usa tu `.env` local).
+
+### Antes de la primera vez (cualquiera de los dos métodos)
 
 - Ajusta `base` en [`vite.config.ts`](vite.config.ts) y `homepage` en
   [`package.json`](package.json) si tu repo no se llama `ANTWallet` o tu
@@ -138,10 +153,6 @@ hacerlo por primera vez:
   producción.
 - En GitHub, en **Settings → Pages**, confirma que la fuente sea la rama
   `gh-pages`.
-
-> Las variables `VITE_FIREBASE_*` quedan incrustadas en el build en tiempo de
-> compilación. Si despliegas vía CI/CD en vez de `npm run deploy` local,
-> defínelas ahí como secrets antes de compilar.
 
 ## 🔐 Acceso y seguridad
 
