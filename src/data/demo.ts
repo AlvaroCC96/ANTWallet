@@ -116,5 +116,15 @@ export const DEMO_DATA: AppData = {
     },
   ],
   unlockedAchievements: [],
+  aiInsights: [],
+  aiWatcherState: {
+    lastLevel: 1,
+    lastQueenCategory: null,
+    celebratedBossIds: [],
+    celebratedGoalIds: [],
+    netWorthPositiveCelebrated: false,
+    netWorthMilestonesHit: [],
+    antWarningMonth: null,
+  },
   settings: { monthlyAntBudget: 150000 },
 }

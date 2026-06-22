@@ -10,6 +10,7 @@ import { AccessDeniedNotice } from './components/auth/AccessDeniedNotice'
 import { UserBadge } from './components/UserBadge'
 import { ThemeToggle } from './components/ThemeToggle'
 import { AchievementWatcher } from './components/rpg/AchievementWatcher'
+import { AIEventWatcher } from './components/ai/AIEventWatcher'
 
 // Each tab's content is loaded on demand: keeps the initial bundle (login +
 // access gating) small, since none of this is needed before the user is in.
@@ -63,6 +64,7 @@ function AppContent() {
   return (
     <div className="min-h-screen bg-deep">
       <AchievementWatcher />
+      <AIEventWatcher />
       <header className="border-b border-deep-darker/60 px-4 sm:px-8 py-4 flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-ink flex items-center gap-2">

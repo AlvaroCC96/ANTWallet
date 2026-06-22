@@ -1,4 +1,5 @@
 import type { FinancialGoal, UnlockedAchievement } from './rpg'
+import type { AIInsight, AIWatcherState } from './ai'
 
 export type AccountType = 'checking' | 'savings' | 'cash' | 'investment' | 'wallet'
 
@@ -56,5 +57,7 @@ export interface AppData {
   payments: DebtPayment[]
   goals: FinancialGoal[]
   unlockedAchievements: UnlockedAchievement[]
+  aiInsights: AIInsight[]
+  aiWatcherState: AIWatcherState
   settings: AppSettings
 }

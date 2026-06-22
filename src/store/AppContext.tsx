@@ -4,9 +4,22 @@ import { db } from '../lib/firebase'
 import { useAuth } from './AuthContext'
 import type { Account, AntExpense, AppData, Debt, DebtPayment } from '../types/models'
 import type { FinancialGoal } from '../types/rpg'
+import type { AIInsight, AIWatcherState } from '../types/ai'
 import { todayISO } from '../utils/dates'
 import { isGoalCompleted } from '../utils/missions'
 import { DEMO_DATA } from '../data/demo'
+
+const MAX_AI_INSIGHTS = 20
+
+const EMPTY_AI_WATCHER_STATE: AIWatcherState = {
+  lastLevel: 1,
+  lastQueenCategory: null,
+  celebratedBossIds: [],
+  celebratedGoalIds: [],
+  netWorthPositiveCelebrated: false,
+  netWorthMilestonesHit: [],
+  antWarningMonth: null,
+}
 
 const EMPTY_DATA: AppData = {
   accounts: [],
@@ -15,6 +28,8 @@ const EMPTY_DATA: AppData = {
   payments: [],
   goals: [],
   unlockedAchievements: [],
+  aiInsights: [],
+  aiWatcherState: EMPTY_AI_WATCHER_STATE,
   settings: { monthlyAntBudget: 150000 },
 }
 
@@ -31,6 +46,8 @@ function normalizeData(raw: Partial<AppData>): AppData {
     settings: { ...EMPTY_DATA.settings, ...raw.settings },
     goals: raw.goals ?? [],
     unlockedAchievements: raw.unlockedAchievements ?? [],
+    aiInsights: raw.aiInsights ?? [],
+    aiWatcherState: { ...EMPTY_AI_WATCHER_STATE, ...raw.aiWatcherState },
   }
 }
 
@@ -51,6 +68,9 @@ interface AppContextValue {
   updateGoalAmount: (id: string, currentAmount: number) => { completed: boolean }
   deleteGoal: (id: string) => void
   recordAchievementUnlocks: (ids: string[]) => void
+  addAIInsight: (insight: AIInsight) => void
+  clearAIInsights: () => void
+  updateAIWatcherState: (patch: Partial<AIWatcherState>) => void
   loadDemo: () => void
   clearAll: () => void
   importBackup: (json: AppData) => void
@@ -179,6 +199,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
         const newEntries = ids.filter((id) => !existing.has(id)).map((id) => ({ id, unlockedAt: todayISO() }))
         if (newEntries.length === 0) return
         persist({ ...data, unlockedAchievements: [...data.unlockedAchievements, ...newEntries] })
+      },
+      addAIInsight: (insight) => {
+        const aiInsights = [insight, ...data.aiInsights].slice(0, MAX_AI_INSIGHTS)
+        persist({ ...data, aiInsights })
+      },
+      clearAIInsights: () => {
+        persist({ ...data, aiInsights: [] })
+      },
+      updateAIWatcherState: (patch) => {
+        persist({ ...data, aiWatcherState: { ...data.aiWatcherState, ...patch } })
       },
       loadDemo: () => {
         persist(DEMO_DATA)

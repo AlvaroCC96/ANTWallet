@@ -41,16 +41,22 @@ una tabla de Excel nunca va a dar.
   quién entra.
 - **Multiusuario real**: cada cuenta de Google tiene su propio dashboard,
   sincronizado en la nube (Firestore), no en el navegador.
+- **🧠 AntAI Advisor**: un consejero financiero con IA generativa que observa
+  tu progreso y reacciona solo cuando pasa algo importante (subes de nivel,
+  derrotas un jefe, cambia la Reina Hormiga, completas una meta, tu
+  patrimonio se vuelve positivo o cruza un hito, o tus gastos hormiga se
+  descontrolan). También puedes pedirle un consejo cuando quieras.
 
 ## 🛠️ Stack
 
 | Capa | Tecnología |
 |---|---|
 | UI | React + TypeScript + Vite |
-| Estilos | TailwindCSS (dark mode) |
+| Estilos | TailwindCSS (dark/light mode) |
 | Animación | Framer Motion |
 | Auth | Firebase Authentication (Google SSO) |
 | Datos | Firebase Firestore (tiempo real, por usuario) |
+| IA | OpenAI API vía Firebase Cloud Functions |
 | Iconografía | lucide-react |
 
 ## 🚀 Probarlo localmente
@@ -147,19 +153,119 @@ hacerlo por primera vez:
   Firestore (`users/{uid}`), y las reglas de seguridad (no solo el código del
   frontend) impiden que alguien lea o escriba los datos de otra persona.
 
+## 🧠 AntAI Advisor (opcional)
+
+AntAI Advisor es un consejero financiero con IA generativa integrado al RPG:
+nunca calcula montos ni toca tus datos, solo interpreta un resumen y genera
+mensajes narrativos. Es **opcional** — el resto de la app funciona perfecto
+sin configurarlo, y si la función no está desplegada, AntAI simplemente
+muestra un mensaje local ("el oráculo está descansando") en vez de romperse.
+
+### Requisitos para activarlo
+
+1. **Plan Blaze en Firebase** (pago por uso). Las Cloud Functions necesitan
+   salir a internet para llamar a OpenAI, y eso requiere el plan de pago —
+   el plan gratuito Spark no lo permite. Tiene una capa gratuita generosa;
+   para el volumen de esta app el costo real es mínimo.
+2. **Una cuenta y API key de OpenAI** — créala en
+   [platform.openai.com](https://platform.openai.com/api-keys). Esta key
+   **nunca** va en el frontend ni en variables `VITE_*`; vive solo en
+   Firebase Secret Manager.
+
+### 1. Instalar el código de las funciones
+
+```bash
+cd functions
+npm install
+```
+
+### 2. Iniciar sesión y conectar el proyecto de Firebase
+
+```bash
+npx firebase-tools login
+npx firebase-tools use --add   # elige tu proyecto (antwallet-b8f31 si usas el mismo)
+```
+
+### 3. Guardar la API key de OpenAI como secret
+
+```bash
+npx firebase-tools functions:secrets:set OPENAI_API_KEY
+```
+
+Te pedirá pegar la key — queda cifrada en Secret Manager, no en el código.
+
+### 4. (Opcional) Elegir el modelo
+
+Por defecto la función usa `gpt-4o-mini` (económico). Para usar otro modelo
+de tu cuenta de OpenAI sin tocar código, crea `functions/.env` (no se sube a
+git) con:
+
+```
+OPENAI_MODEL=gpt-4o-mini
+```
+
+Ese valor sobreescribe el `default` definido vía `defineString('OPENAI_MODEL', ...)`
+en `functions/src/index.ts`. Si prefieres no crear el archivo, simplemente
+edita el `default` ahí mismo y vuelve a desplegar.
+
+### 5. Desplegar
+
+```bash
+cd functions && npm run build
+npx firebase-tools deploy --only functions
+```
+
+Esto publica `generateFinancialInsight`. El frontend ya está configurado
+para llamarla (`src/lib/aiAdvisor.ts`) — no necesitas tocar nada más.
+
+### Cómo probar cada parte
+
+- **Generación manual**: entra al Dashboard, busca la card "AntAI Advisor" y
+  haz clic en "🧠 Generar Consejo IA". Deberías ver el shimmer de carga y
+  luego un consejo nuevo.
+- **Eventos automáticos**: usa el botón "Cargar demo" (pestaña Datos) o
+  registra acciones reales — subir de nivel, pagar una deuda hasta dejarla en
+  $0, completar una meta, o hacer que tus gastos hormiga superen el 80% del
+  presupuesto mensual. Cada uno dispara un insight solo, sin que aprietes
+  nada, y aparece un toast con el evento. AntAI no repite el mismo evento dos
+  veces (queda guardado en `aiWatcherState` dentro de tu documento de
+  usuario).
+- **Fallback local**: antes de desplegar la función (o si la apagas/falla),
+  haz clic en "Generar Consejo IA" — deberías ver un mensaje como "El oráculo
+  está descansando" en vez de un error o una pantalla rota.
+- **Historial**: abre "Historial" en la card de AntAI para ver hasta los
+  últimos 20 consejos, y "Limpiar historial" para vaciarlo.
+
+### Seguridad
+
+- La API key de OpenAI vive en Firebase Secret Manager, nunca en el
+  frontend ni en el repo.
+- La función valida que quien llama esté autenticado y, además, que su
+  correo esté en `allowedUsers` (o sea el admin) — el mismo control de
+  acceso que ya usa el resto de la app, replicado server-side con el Admin
+  SDK (que ignora `firestore.rules` a propósito, ya que corre en el backend).
+- A la IA solo se le envía un `FinancialSnapshot` con montos agregados
+  (patrimonio, nivel, XP, nombre del jefe principal, etc.) — nunca gastos
+  individuales, nombres de cuentas reales ni movimientos completos.
+
 ## 🗂️ Estructura del proyecto
 
 ```
 src/
-  components/         UI: formularios, listas, dashboard, gamificación
-  components/auth/     pantallas de login y acceso denegado
-  components/admin/    panel de administración de usuarios permitidos
-  store/                AuthContext (Firebase Auth), AppContext (Firestore), FxContext (efectos)
-  lib/                  inicialización de Firebase
-  utils/                currency, calculations, csv, dates, authErrors
-  types/                modelos de datos
-  data/                 categorías de gasto y datos demo
-firestore.rules          reglas de seguridad por usuario y allowlist de acceso
+  components/          UI: formularios, listas, dashboard, gamificación
+  components/auth/      pantallas de login y acceso denegado
+  components/admin/     panel de administración de usuarios permitidos
+  components/rpg/       perfil RPG, misiones, timeline, logros
+  components/ai/         AntAI Advisor: card, historial, watcher de eventos
+  store/                 AuthContext, AppContext (Firestore), FxContext, ThemeContext
+  hooks/                 useAIAdvisor
+  lib/                   inicialización de Firebase + cliente de Cloud Functions
+  utils/                 calculations, rpg, achievements, missions, timeline,
+                         bossNames, creditCards, snapshot, aiEventDetector
+  types/                 modelos de datos, tipos RPG y de IA
+  data/                  categorías, datos demo, mensajes, eventos de IA
+firestore.rules           reglas de seguridad por usuario y allowlist de acceso
+functions/                Firebase Cloud Functions (generateFinancialInsight)
 ```
 
 ---

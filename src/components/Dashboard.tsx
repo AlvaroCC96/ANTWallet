@@ -18,6 +18,7 @@ import { CreditCardSummary } from './CreditCardSummary'
 import { RPGProfileCard } from './rpg/RPGProfileCard'
 import { MissionBoard } from './rpg/MissionBoard'
 import { FinancialTimeline } from './rpg/FinancialTimeline'
+import { AIAdvisorCard } from './ai/AIAdvisorCard'
 
 const cardVariants = {
   hidden: { opacity: 0, y: 16 },
@@ -36,6 +37,8 @@ export function Dashboard() {
   return (
     <div className="space-y-6">
       <RPGProfileCard />
+
+      <AIAdvisorCard />
 
       <div className="grid sm:grid-cols-3 gap-4">
         <motion.div
